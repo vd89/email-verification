@@ -18,6 +18,7 @@ const UserSchema = new Schema(
 		},
 		email: {
 			type: String,
+			unique: true,
 			required: true,
 		},
 		hashed_password: {
@@ -33,7 +34,7 @@ const UserSchema = new Schema(
 		},
 		tokenExpiresIn: {
 			type: Number,
-			default: new Date().setHours(new Date().getHours() + 2),
+			default: new Date().setHours(new Date().getMinutes() + 2),
 		},
 		accountActivated: {
 			type: Boolean,
