@@ -1,0 +1,86 @@
+<!-- @format -->
+
+<div class="jumbotron">
+	<div class="container">
+		<h1 class="display-3">Hello, world!</h1>
+		<p class="lead">
+			This is a simple hero unit, a simple jumbotron-style component for calling
+			extra attention to featured content or information.
+		</p>
+		<hr class="my-4" />
+		<p>
+			It uses utility classes for typography and spacing to space content out
+			within the larger container.
+		</p>
+		<p class="lead">
+			<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+		</p>
+	</div>
+</div>
+
+<div class="row justify-content-center">
+	<div class="col-5">
+		<div class='card mr-auto '>
+			<div class="card-header text-center">
+				<h2>Sign Up</h2>
+			</div>
+			<div class="card-body">
+				<form action="/api/register" method="POST">
+					<div class="form-group mb-3">
+						<label>Name</label>
+						<input name="name" type="text" class="form-control form-control-lg" />
+					</div>
+
+					<div class="form-group mb-3">
+						<label>E-mail Address</label>
+						<input name="email" type="email" class="form-control form-control-lg" />
+					</div>
+
+					<div class="form-group mb-0">
+						<div class="row">
+							<div class="col-sm-6 mb-3">
+								<label>Password</label>
+								<input
+									name="password"
+									type="password"
+									class="form-control form-control-lg"
+								/>
+							</div>
+							<div class="col-sm-6 mb-3">
+								<label>Password Confirmation</label>
+								<input
+									name="pwd_confirm"
+									type="password"
+									class="form-control form-control-lg"
+								/>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-8">
+							<div class="checkbox-custom checkbox-default">
+								<input id="AgreeTerms" name="agreeterms" type="checkbox" />
+								<label for="AgreeTerms">I agree with terms of use</label>
+							</div>
+						</div>
+						<div class="col-sm-4 text-right">
+							<button type="submit" class="btn btn-primary mt-2">Sign Up</button>
+						</div>
+						<div class="col-sm-4 text-left">
+							<a href="/forgot-password" class="float-right">Forgot Password?</a>
+						</div>
+					</div>
+
+					<span class="mt-3 mb-3 line-thru text-center text-uppercase">
+						<span>or</span>
+					</span>
+
+					<p class="text-center">
+						Already have an account? <a href="/signup">Sign In!</a>
+					</p>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

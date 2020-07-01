@@ -1,0 +1,40 @@
+<!-- @format -->
+<div class="container">
+	<div class="card">
+		<div class="card-header">
+			<h1>Blog</h1>
+		</div>
+		<div class="card-body">
+			<form action="/blog/create" method="POST">
+				<fieldset>
+					<div class="form-group">
+						<label for="title">Title</label>
+						<input
+							type="text"
+							class="form-control"
+							id="title"
+              placeholder="Please provide title"
+              name="title"
+						/>
+					</div>
+					<div class="form-group">
+						<label for="snippet">Snippet</label>
+						<input
+							type="text"
+							class="form-control"
+              placeholder="Provide Snippet"
+              name="snippet"
+						/>
+          </div>
+          <div class="form-group">
+            <label for="body">Body</label>
+            <textarea id="body" cols="10" rows="8" class="form-control"
+            name="body"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Submit</button>
+
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
