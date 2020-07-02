@@ -11,7 +11,7 @@ const {
 	user_forgotPasswordView,
 	user_forgotPassword,
 	user_resetPassword,
-	user_passwordChanged,
+	user_changedPassword,
 } = indexController;
 
 router.route('/').get(user_form).post(user_create);
@@ -21,5 +21,7 @@ router.get('/verify/:emailToken', user_verifyEmail);
 router.route('/forgot').get(user_forgotPasswordView).post(user_forgotPassword);
 
 router.get('/reset-password/:passwordResetToken', user_resetPassword);
+
+router.post('/change', user_changedPassword);
 
 export default router;

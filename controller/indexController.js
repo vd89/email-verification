@@ -4,6 +4,7 @@ import randomstring from 'randomstring';
 import path from 'path';
 import User from './../models/User.js';
 import userMail from './mailController.js';
+import hash from '../lib/help.js';
 
 const __dirname = path.resolve();
 const { generate } = randomstring;
@@ -91,9 +92,41 @@ const user_resetPassword = async (req, res) => {
 		if (!user) {
 			return res.status(400).json({ ErrMsg: 'You have not register with us ' });
 		}
+		if (user.passwordReseted) {
+			return res
+				.status(400)
+				.json({ ErrMsg: 'Your password reset link already used' });
+		}
+		const isTokenExpired = new Date().getTime() > user.tokenExpiresIn;
+		if (isTokenExpired) {
+			return res
+				.status(400)
+				.json({ ErrMsg: 'Password reset link has expired' });
+		}
+		await User.findOneAndUpdate(
+			{ _id: user._id },
+			{ $set: { passwordReseted: true } },
+		);
+		res.render('changedPassword', { email: user.email });
 	} catch (err) {
 		console.log(err);
 		res.status(400).json({ ErrMsg: 'There is an error from server' });
+	}
+};
+
+const user_changedPassword = async (req, res) => {
+	const { email, password, pwd_confirm } = req.body;
+	if (password !== pwd_confirm) {
+		return res.status(400).json({ ErrMsg: 'Password does not match' });
+	}
+	try {
+		const salt = Math.round(new Date().valueOf() * Math.random());
+		const hashed_password = hash(password);
+		await User.findOneAndUpdate({ email }, { $set: { hashed_password, salt } });
+		res.status(200).json({ Msg: 'Your password has been updated succefully' });
+	} catch (err) {
+		console.log(err);
+		res.status(400).json({ ErrMsg: 'There is an error from server side' });
 	}
 };
 
@@ -104,4 +137,5 @@ export default {
 	user_forgotPasswordView,
 	user_forgotPassword,
 	user_resetPassword,
+	user_changedPassword,
 };
