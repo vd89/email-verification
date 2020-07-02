@@ -34,7 +34,7 @@ const UserSchema = new Schema(
 		},
 		tokenExpiresIn: {
 			type: Number,
-			default: new Date().setHours(new Date().getMinutes() + 2),
+			default: new Date().setMinutes(new Date().getMinutes() + 10),
 		},
 		accountActivated: {
 			type: Boolean,

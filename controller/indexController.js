@@ -1,10 +1,12 @@
 /** @format */
 import ejs from 'ejs';
+import randomstring from 'randomstring';
 import path from 'path';
 import User from './../models/User.js';
 import userMail from './mailController.js';
 
 const __dirname = path.resolve();
+const { generate } = randomstring;
 
 //User Form
 const user_form = (req, res) => {
@@ -52,4 +54,54 @@ const user_verifyEmail = async (req, res) => {
 	}
 };
 
-export default { user_create, user_form, user_verifyEmail };
+const user_forgotPasswordView = (req, res) => {
+	res.status(200).render('forgotPassword');
+};
+const user_forgotPassword = async (req, res) => {
+	const { email } = req.body;
+	try {
+		const user = await User.findOne({ email });
+		if (!user) {
+			return res.status(400).json({ ErrMsg: 'You are not register with us ' });
+		}
+		const resetToken = generate();
+		const passwordResetLink = `http://192.168.0.111:8085/reset-password/${resetToken}`;
+		user.passwordResetToken = resetToken;
+		user.tokenExpiresIn = new Date().setMinutes(new Date().getMinutes() + 10);
+		await user.save();
+		const subject = 'The password Reset';
+		const html = await ejs.renderFile(__dirname + '/views/passwordReset.ejs', {
+			name: user.name,
+			passwordResetLink,
+		});
+		userMail(user.email, subject, html);
+		res.status(200).json({
+			Msg: 'Please check the email you have the linke to reset password',
+		});
+	} catch (err) {
+		console.log(err);
+		res.status(400).json({ ErrMsg: 'There is an error from server' });
+	}
+};
+
+const user_resetPassword = async (req, res) => {
+	const { passwordResetToken } = req.params;
+	try {
+		const user = await User.findOne({ passwordResetToken });
+		if (!user) {
+			return res.status(400).json({ ErrMsg: 'You have not register with us ' });
+		}
+	} catch (err) {
+		console.log(err);
+		res.status(400).json({ ErrMsg: 'There is an error from server' });
+	}
+};
+
+export default {
+	user_create,
+	user_form,
+	user_verifyEmail,
+	user_forgotPasswordView,
+	user_forgotPassword,
+	user_resetPassword,
+};
